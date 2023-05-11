@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using WebAPI.Models;
+using DAL;
+using BLL;
 
 namespace WebAPI.Controllers
 {
@@ -10,40 +11,36 @@ namespace WebAPI.Controllers
     [ApiController]
     public class ServicesController : ControllerBase
     {
-        private readonly ClinicContext _context;
+        private readonly IServiceService _service;
 
-        public ServicesController(ClinicContext context)
+        public ServicesController(IServiceService service)
         {
-            _context = context;
+            _service = service;
         }
 
         // GET: api/Services
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Service>>> GetService()
+        public async Task<ActionResult<IEnumerable<BLL.ServiceDTO>>> GetService()
         {
-          if (_context.Service == null)
-          {
-              return NotFound();
-          }
-            return await _context.Service.ToListAsync();
+            return await _service.GetAllServices();
         }
 
         // GET: api/Services/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Service>> GetService(int id)
         {
-          if (_context.Service == null)
-          {
-              return NotFound();
-          }
-            var service = await _context.Service.FindAsync(id);
+            //if (_context.Service == null)
+            //{
+            //    return NotFound();
+            //}
+            //  var service = await _context.Service.FindAsync(id);
 
-            if (service == null)
-            {
-                return NotFound();
-            }
-
-            return service;
+            //  if (service == null)
+            //  {
+            //      return NotFound();
+            //  }
+            return NoContent();
+          //  return service;
         }
 
         // PUT: api/Services/5
@@ -51,28 +48,28 @@ namespace WebAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutService(int id, Service service)
         {
-            if (id != service.Id)
-            {
-                return BadRequest();
-            }
+            //if (id != service.Id)
+            //{
+            //    return BadRequest();
+            //}
 
-            _context.Entry(service).State = EntityState.Modified;
+            //_context.Entry(service).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ServiceExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            //try
+            //{
+            //    await _context.SaveChangesAsync();
+            //}
+            //catch (DbUpdateConcurrencyException)
+            //{
+            //    if (!ServiceExists(id))
+            //    {
+            //        return NotFound();
+            //    }
+            //    else
+            //    {
+            //        throw;
+            //    }
+            //}
 
             return NoContent();
         }
@@ -82,12 +79,12 @@ namespace WebAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Service>> PostService(Service service)
         {
-          if (_context.Service == null)
-          {
-              return Problem("Entity set 'ClinicContext.Service'  is null.");
-          }
-            _context.Service.Add(service);
-            await _context.SaveChangesAsync();
+          //if (_context.Service == null)
+          //{
+          //    return Problem("Entity set 'ClinicContext.Service'  is null.");
+          //}
+          //  _context.Service.Add(service);
+          //  await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetService", new { id = service.Id }, service);
         }
@@ -96,25 +93,25 @@ namespace WebAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteService(int id)
         {
-            if (_context.Service == null)
-            {
-                return NotFound();
-            }
-            var service = await _context.Service.FindAsync(id);
-            if (service == null)
-            {
-                return NotFound();
-            }
+            //if (_context.Service == null)
+            //{
+            //    return NotFound();
+            //}
+            //var service = await _context.Service.FindAsync(id);
+            //if (service == null)
+            //{
+            //    return NotFound();
+            //}
 
-            _context.Service.Remove(service);
-            await _context.SaveChangesAsync();
+            //_context.Service.Remove(service);
+            //await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
         private bool ServiceExists(int id)
         {
-            return (_context.Service?.Any(e => e.Id == id)).GetValueOrDefault();
+            return false; // (_context.Service?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

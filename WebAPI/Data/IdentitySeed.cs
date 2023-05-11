@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using WebAPI.Models;
+using DAL;
 
 namespace WebAPI.Data
 {
@@ -14,20 +14,24 @@ namespace WebAPI.Data
             {
                 await roleManager.CreateAsync(new IdentityRole("admin"));
             }
+            if (await roleManager.FindByNameAsync("doctor") == null)
+            {
+                await roleManager.CreateAsync(new IdentityRole("doctor"));
+            }
             if (await roleManager.FindByNameAsync("user") == null)
             {
                 await roleManager.CreateAsync(new IdentityRole("user"));
             }
             // Создание Администратора
-            string adminEmail = "admin@mail.com";
+            string adminEmail = "babajenov@mail.ru";
             string adminPassword = "Aa123456!";
             if (await userManager.FindByNameAsync(adminEmail) == null)
             {
-                User admin = new User { Email = adminEmail, UserName = adminEmail };
+                User admin = new User { Email = adminEmail, UserName = adminEmail, IsDoctor = true, IsPatient = false, UserId = 1};
                 IdentityResult result = await userManager.CreateAsync(admin, adminPassword);
                 if (result.Succeeded)
                 {
-                    await userManager.AddToRoleAsync(admin, "admin");
+                    await userManager.AddToRoleAsync(admin, "doctor");
                 }
             }
             // Создание Пользователя
@@ -35,7 +39,7 @@ namespace WebAPI.Data
             string userPassword = "Aa123456!";
             if (await userManager.FindByNameAsync(userEmail) == null)
             {
-                User user = new User { Email = userEmail, UserName = userEmail };
+                User user = new User { Email = userEmail, UserName = userEmail, IsDoctor = false, IsPatient = true, UserId = 1 };
                 IdentityResult result = await userManager.CreateAsync(user, userPassword);
                 if (result.Succeeded)
                 {
