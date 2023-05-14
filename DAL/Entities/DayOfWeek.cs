@@ -1,5 +1,8 @@
 ﻿namespace DAL
 {
+    /// <summary>
+    /// День недели
+    /// </summary>
     public partial class DayOfWeek
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]

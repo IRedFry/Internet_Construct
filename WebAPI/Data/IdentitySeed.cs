@@ -27,7 +27,7 @@ namespace WebAPI.Data
             string adminPassword = "Aa123456!";
             if (await userManager.FindByNameAsync(adminEmail) == null)
             {
-                User admin = new User { Email = adminEmail, UserName = adminEmail, IsDoctor = true, IsPatient = false, UserId = 1};
+                User admin = new User { Email = adminEmail, UserName = adminEmail, UserId = 1};
                 IdentityResult result = await userManager.CreateAsync(admin, adminPassword);
                 if (result.Succeeded)
                 {
@@ -39,7 +39,7 @@ namespace WebAPI.Data
             string userPassword = "Aa123456!";
             if (await userManager.FindByNameAsync(userEmail) == null)
             {
-                User user = new User { Email = userEmail, UserName = userEmail, IsDoctor = false, IsPatient = true, UserId = 1 };
+                User user = new User { Email = userEmail, UserName = userEmail, UserId = 1 };
                 IdentityResult result = await userManager.CreateAsync(user, userPassword);
                 if (result.Succeeded)
                 {

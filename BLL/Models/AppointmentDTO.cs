@@ -20,7 +20,7 @@ namespace BLL
         [JsonConstructor]
         public AppointmentDTO() { }
 
-        public AppointmentDTO(Appointment appointment)
+        public AppointmentDTO(Appointment appointment, IDbRepos context)
         {
             Id = appointment.Id;
             Date = (DateTime)appointment.Date;
@@ -31,7 +31,7 @@ namespace BLL
             StatusId = (int)appointment.StatusId;
             Conclusion = appointment.Conclusion;
             Price = (decimal)appointment.Price;
-            Duration = appointment.Service.Duration;
+            Duration = context.Services.GetItem((int)appointment.ServiceId).Duration;
             EndTime = StartTime.Add(new TimeSpan(Duration, 0, 0));
         }
     }

@@ -2,6 +2,9 @@
 
 namespace DAL
 {
+    /// <summary>
+    /// Услуга
+    /// </summary>
     public partial class Service
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -12,7 +15,7 @@ namespace DAL
 
         public int Id { get; set; }
         public string Name { get; set; }
-        public Nullable<decimal> Price { get; set; }
+        public decimal Price { get; set; }
         public int Duration { get; set; }
         public int SpecializationId { get; set; }
 

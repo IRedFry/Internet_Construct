@@ -2,6 +2,9 @@
 
 namespace DAL
 {
+    /// <summary>
+    /// Статус записи
+    /// </summary>
     public partial class Status
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]

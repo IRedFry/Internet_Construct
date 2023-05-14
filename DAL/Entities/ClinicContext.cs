@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace DAL
 {
+    /// <summary>
+    /// Контекст базы данные клиники
+    /// </summary>
     public partial class ClinicContext : IdentityDbContext<User>
     {
         protected readonly IConfiguration configuration;

@@ -2,6 +2,9 @@
 
 namespace DAL
 {
+    /// <summary>
+    /// Модель данных для формы входа
+    /// </summary>
     public class LoginViewModel
     {
         [Required]

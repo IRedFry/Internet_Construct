@@ -34,29 +34,25 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("Date")
+                    b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("DoctorId")
-                        .IsRequired()
+                    b.Property<int>("DoctorId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PatientId")
-                        .IsRequired()
+                    b.Property<int>("PatientId")
                         .HasColumnType("int");
 
-                    b.Property<decimal?>("Price")
+                    b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int?>("ServiceId")
-                        .IsRequired()
+                    b.Property<int>("ServiceId")
                         .HasColumnType("int");
 
-                    b.Property<TimeSpan?>("StartTime")
+                    b.Property<TimeSpan>("StartTime")
                         .HasColumnType("time");
 
-                    b.Property<int?>("StatusId")
-                        .IsRequired()
+                    b.Property<int>("StatusId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -101,18 +97,14 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal?>("Salary")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<string>("Sername")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("SpecializationId")
-                        .IsRequired()
+                    b.Property<int>("SpecializationId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("StartDate")
+                    b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -130,7 +122,7 @@ namespace DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("DayOfBirth")
+                    b.Property<DateTime>("DayOfBirth")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
@@ -162,21 +154,19 @@ namespace DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("DayOfWeekId")
-                        .IsRequired()
+                    b.Property<int>("DayOfWeekId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("DoctorId")
-                        .IsRequired()
+                    b.Property<int>("DoctorId")
                         .HasColumnType("int");
 
-                    b.Property<TimeSpan?>("EndTime")
+                    b.Property<TimeSpan>("EndTime")
                         .HasColumnType("time");
 
-                    b.Property<bool?>("IsHoliday")
+                    b.Property<bool>("IsHoliday")
                         .HasColumnType("bit");
 
-                    b.Property<TimeSpan?>("StartTime")
+                    b.Property<TimeSpan>("StartTime")
                         .HasColumnType("time");
 
                     b.HasKey("Id");
@@ -203,7 +193,7 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal?>("Price")
+                    b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("SpecializationId")
@@ -267,12 +257,6 @@ namespace DAL.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDoctor")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsPatient")
                         .HasColumnType("bit");
 
                     b.Property<bool>("LockoutEnabled")

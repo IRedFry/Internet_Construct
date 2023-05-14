@@ -21,10 +21,9 @@ namespace BLL
             Id = d.Id;
             Name = d.Name;
             Sername = d.Sername;
-            SpecializationId = (int)d.SpecializationId;
+            SpecializationId = d.SpecializationId;
             SpecializationName = context.Specializations.GetItem(SpecializationId).Name;
-            Salary = (decimal)d.Salary;
-            StartDate = (DateTime)d.StartDate;
+            StartDate = d.StartDate;
             Years = (int)((DateTime.Now - StartDate).TotalDays / 365);
         }
 

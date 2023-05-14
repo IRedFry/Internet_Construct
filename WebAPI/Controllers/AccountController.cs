@@ -1,4 +1,5 @@
-﻿using DAL;
+﻿using BLL;
+using DAL;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -9,10 +10,14 @@ namespace ASPNetCoreApp.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+        private readonly IPatientService patientService;
+        private readonly IDoctorService doctorService;
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IPatientService patientService, IDoctorService doctorService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            this.doctorService = doctorService;
+            this.patientService = patientService;
         }
         [HttpPost]
         [Route("api/Account/Register")]
@@ -21,8 +26,17 @@ namespace ASPNetCoreApp.Controllers
         {
             if (ModelState.IsValid)
             {
-
-                User user = new() { Email = model.Email, UserName = model.Email };
+                PatientDTO p = new PatientDTO
+                {
+                    DateOfBirth = model.Dob,
+                    Name = model.Name,
+                    Passport = model.Passport,
+                    SerName = model.Sername,
+                    Phone = model.Phone,
+                };
+                int id = patientService.CreatePatient(p);
+                p.Id = id;
+                User user = new() {UserId = id, Email = model.Email, UserName = model.Email };
                 // Добавление нового пользователя
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
@@ -31,7 +45,8 @@ namespace ASPNetCoreApp.Controllers
                     await _userManager.AddToRoleAsync(user, "user");
                     // Установка куки
                     await _signInManager.SignInAsync(user, false);
-                    return Ok(new { message = "Добавлен новый пользователь: " + user.UserName });
+
+                    return Ok(new { message = "Добавлен новый пользователь: " + user.UserName, patient = p});
                 }
                 else
                 {
@@ -61,19 +76,31 @@ namespace ASPNetCoreApp.Controllers
         }
         [HttpPost]
         [Route("api/Account/Login")]
-        //[AllowAnonymous]
+        [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginViewModel model)
         {
             if (ModelState.IsValid)
             {
                 var result =
-                await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+                await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe,false);
                 if (result.Succeeded)
                 {
                     var user = await _userManager.FindByEmailAsync(model.Email);
                     IList<string>? roles = await _userManager.GetRolesAsync(user);
                     string? userRole = roles.FirstOrDefault();
-                    return Ok(new { message = "Выполнен вход", userName = model.Email, userRole });
+
+                    if (userRole == "user")
+                    {
+                        PatientDTO patient = patientService.GetPatient(user.UserId);
+                        return Ok(new { message = "Выполнен вход", userName = model.Email, userRole, patient = patient });
+                    }
+                    else if (userRole == "doctor")
+                    {
+                        DoctorDTO doctor = await doctorService.GetDoctorById(user.UserId);
+                        return Ok(new { message = "Выполнен вход", userName = model.Email, userRole, doctor = doctor });
+                    }
+
+                    return Unauthorized(new { message = "Неизвестная роль" });
                 }
                 else
                 {
@@ -120,8 +147,18 @@ namespace ASPNetCoreApp.Controllers
             }
             IList<string> roles = await _userManager.GetRolesAsync(usr);
             string? userRole = roles.FirstOrDefault();
-            return Ok(new { message = "Сессия активна", userName = usr.UserName, userRole });
+            if (userRole == "user")
+            {
+                PatientDTO patient = patientService.GetPatient(usr.UserId);
+                return Ok(new { message = "Сессия активна, пациент", userName = usr.UserName, userRole, patient = patient });
+            }
+            else if (userRole == "doctor")
+            {
+                DoctorDTO doctor = await doctorService.GetDoctorById(usr.UserId);
+                return Ok(new { message = "Сессия активна, пациент", userName = usr.UserName, userRole, doctor = doctor });
+            }
 
+            return Unauthorized(new { message = "Неизвестная роль" });
 
         }
         private Task<User> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);

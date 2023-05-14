@@ -1,5 +1,8 @@
 ﻿namespace DAL
 {
+    /// <summary>
+    /// Специальность врача
+    /// </summary>
     public partial class Specialization
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]

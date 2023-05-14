@@ -23,6 +23,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddDbContext<ClinicContext>();
 
 builder.Services.AddScoped<IDoctorService, DoctorService>();
+builder.Services.AddScoped<IPatientService, PatientService>();
 builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 builder.Services.AddScoped<IDbCrud, DBDataOperation>();
 builder.Services.AddScoped<IServiceService, ServiceService>();
